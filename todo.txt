@@ -1,0 +1,3 @@
+# A list of things to do so I don't lose track
+* Make a gamecontroller class which the others inherit from
+* Clean up the file structure 
