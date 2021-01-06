@@ -17,7 +17,7 @@ headers = {
 def get_live_data(url, league=2790):
     tmp = []
     print(json.loads(requests.request("GET", url, headers=headers, params=querystring).text)['api']['fixtures'])
-    for fixture in requests.request("GET", url, headers=headers, params=querystring).text)['api']['fixtures']:
+    for fixture in json.loads(requests.request("GET", url, headers=headers, params=querystring).text)['api']['fixtures']:
         if fixture['league_id'] == league:
             tmp.append(fixture)
     return tmp

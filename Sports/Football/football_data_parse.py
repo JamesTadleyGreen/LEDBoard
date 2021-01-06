@@ -1,26 +1,26 @@
 # imports
 import json
-from Display.image_parser import imageParser
+from Football.Animations.Display.image_parser import imageParser
 import csv
 import ast
 import time
+import os
 
 
 # TODO Read in the next match date and set a cron job
 
 
 # Parse the match data
-# sample_past_match_data = open("../tmp.txt", "r").read()
-# sample_past_match_data = json.loads(json_data)
+sample_past_match_data = open("../tmp.txt", "r").read()
+sample_past_match_data = ast.literal_eval(sample_past_match_data)
 
 def extract_past_football_data(json_data):
-    fixture = json_data['api']['fixtures'][0]
-    hometeam, homelogo = fixture['homeTeam']['team_name'], fixture['homeTeam']['logo']
-    awayteam, awaylogo = fixture['awayTeam']['team_name'], fixture['awayTeam']['logo']
-    venue = fixture['venue']
-    homegoals = fixture['goalsHomeTeam']
-    awaygoals = fixture['goalsAwayTeam']
-    elapsed = fixture['elapsed']
+    hometeam, homelogo = json_data['homeTeam']['team_name'], json_data['homeTeam']['logo']
+    awayteam, awaylogo = json_data['awayTeam']['team_name'], json_data['awayTeam']['logo']
+    venue = json_data['venue']
+    homegoals = json_data['goalsHomeTeam']
+    awaygoals = json_data['goalsAwayTeam']
+    elapsed = json_data['elapsed']
     return {'venue': venue, 'elapsed': elapsed, 'home': [hometeam, homegoals, homelogo], 'away': [awayteam, awaygoals, awaylogo]}
 
 def tla_parse(team):
@@ -86,4 +86,5 @@ def sample_live_data(data):
             print(new_events, events)
             time.sleep(1)
 
-sample_live_data('game.txt')
+# print(os.listdir())
+#sample_live_data('../game.txt')

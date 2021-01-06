@@ -32,13 +32,16 @@ class RunText(SampleBase):
 
         # Temp football data
         extracted_data = fdp.extract_past_football_data(fdp.sample_past_match_data)
+        print(extracted_data)
+
         # Home data
         home_team = extracted_data['home'][0]
+        print(home_team, fdp.tla_parse(home_team))
         home_tla = fdp.tla_parse(home_team)
         home_logo = extracted_data['home'][-1]
         # Away data
         away_team = extracted_data['away'][0]
-        print(away_team)
+        print(away_team, fdp.tla_parse(away_team))
         away_tla = fdp.tla_parse(away_team)
         away_logo = extracted_data['away'][-1]
 
@@ -56,11 +59,12 @@ class RunText(SampleBase):
         i=0
         while True:
             offscreen_canvas.Clear()
-            background(offscreen_canvas)
-            draw_team_borders(offscreen_canvas)
-            draw_team_names(offscreen_canvas, home_tla, away_tla)
-            draw_score_borders(offscreen_canvas)
-            draw_score(offscreen_canvas, str(i%10),'0')
+            background(offscreen_canvas, home_logo, away_logo, brightness)
+            draw_team_borders(offscreen_canvas, black)
+            print(away_tla)
+            draw_team_names(offscreen_canvas, home_tla, away_tla, small_font, white)
+            draw_score_borders(offscreen_canvas, black)
+            draw_score(offscreen_canvas, str(i%10),'0', font, white)
             offscreen_canvas = self.matrix.SwapOnVSync(offscreen_canvas)
             #time.sleep(1)
             i+=1
