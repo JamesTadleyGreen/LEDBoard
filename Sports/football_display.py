@@ -32,16 +32,14 @@ class RunText(SampleBase):
 
         # Temp football data
         extracted_data = fdp.extract_past_football_data(fdp.sample_past_match_data)
-        print(extracted_data)
+        live_data = fdp.extract_live_data('../game.txt')
 
         # Home data
         home_team = extracted_data['home'][0]
-        print(home_team, fdp.tla_parse(home_team))
         home_tla = fdp.tla_parse(home_team)
         home_logo = extracted_data['home'][-1]
         # Away data
         away_team = extracted_data['away'][0]
-        print(away_team, fdp.tla_parse(away_team))
         away_tla = fdp.tla_parse(away_team)
         away_logo = extracted_data['away'][-1]
 
@@ -56,18 +54,23 @@ class RunText(SampleBase):
 
 
         # Display ------------------------------------------------------------------------------------------------------------
-        i=0
-        while True:
-            offscreen_canvas.Clear()
-            background(offscreen_canvas, home_logo, away_logo, brightness)
-            draw_team_borders(offscreen_canvas, black)
-            print(away_tla)
-            draw_team_names(offscreen_canvas, home_tla, away_tla, small_font, white)
-            draw_score_borders(offscreen_canvas, black)
-            draw_score(offscreen_canvas, str(i%10),'0', font, white)
-            offscreen_canvas = self.matrix.SwapOnVSync(offscreen_canvas)
-            #time.sleep(1)
-            i+=1
+        event_count=0
+        for timestamp in live_data:
+            new_events, event_count = fdp.extract_most_recent_event(timestamp[0], event_count)
+            if new_events is None:
+                pass
+            else:
+                for event in new_events:
+                    offscreen_canvas.Clear()
+                    fdp.display_event(offscreen_canvas, font, white, event['type'])
+                    offscreen_canvas = self.matrix.SwapOnVSync(offscreen_canvas)
+                # background(offscreen_canvas, home_logo, away_logo, brightness)
+                # draw_team_borders(offscreen_canvas, black)
+                # draw_team_names(offscreen_canvas, home_tla, away_tla, small_font, white)
+                # draw_score_borders(offscreen_canvas, black)
+                # draw_score(offscreen_canvas, str(i%10),'0', font, white)
+                #time.sleep(1)
+                # i+=1
         # Pause
         input()
 
@@ -78,3 +81,5 @@ if __name__ == "__main__":
     run_text = RunText()
     if (not run_text.process()):
         run_text.print_help()
+
+

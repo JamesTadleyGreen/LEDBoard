@@ -1,6 +1,7 @@
 # imports
 import json
 from Football.Animations.Display.image_parser import imageParser
+import Football.Animations.events as events
 import csv
 import ast
 import time
@@ -55,24 +56,9 @@ def extract_most_recent_event(string_data, event_no=0):
         return game_data['events'][-new_events:], len(game_data['events'])
     return None, event_no
 
-def display_event(event):
-    event_dict = {'Goal': event_goal, 'Card': event_card, 'subst': event_sub}
-    return event_dict[event](event)
-
-def event_goal(event):
-    print('goal')
-    pass
-
-def event_card(event):
-    print('card')
-    pass
-
-def event_sub(event):
-    print('sub')
-    pass
-
-def display_game():
-    pass
+def display_event(oc, font, col, event):
+    event_dict = {'Goal': events.event_goal, 'Card': events.event_card, 'subst': events.event_sub}
+    return event_dict[event](oc, font, col, event)
 
 def sample_live_data(data):
     events = 0
@@ -85,6 +71,13 @@ def sample_live_data(data):
             display_game()
             print(new_events, events)
             time.sleep(1)
+
+def extract_live_data(data):
+    tmp = []
+    with open(data) as csv_file:
+        for line in csv.reader(csv_file, delimiter="\n"):
+            tmp.append(line)
+    return tmp
 
 # print(os.listdir())
 #sample_live_data('../game.txt')
