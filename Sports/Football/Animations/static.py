@@ -32,4 +32,9 @@ def draw_team_borders(oc, col):
 def draw_team_names(oc, home_team, away_team, font, col):
     graphics.DrawText(oc, font, 16-4*3//2, 7, col, home_team)
     graphics.DrawText(oc, font, 16+32-4*3//2, 7, col, away_team)
-        
+
+def draw_time_border(oc, col):
+    pass
+
+def draw_time(oc, time):
+    print(time)
